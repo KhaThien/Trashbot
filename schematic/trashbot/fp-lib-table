@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "nodemcu-32s-footprint")(type "KiCad")(uri "/Users/thiennguyen/Desktop/Trashbot/schematic/kicad-external-libraries/nodemcu-32s-footprint.pretty")(options "")(descr ""))
+)
