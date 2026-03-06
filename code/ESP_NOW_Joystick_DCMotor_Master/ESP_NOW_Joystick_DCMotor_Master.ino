@@ -7,13 +7,15 @@
 #define yPin 35
 int xVal;
 int yVal;
-// Slave Board Mac: 68:FE:71:80:5D:C0
+// Extra ESP Board Mac: 68:FE:71:80:5D:C0
+// Slave MAC Address: 88:57:21:8E:AD:9C
 // Master Mac Address: 94:51:DC:5D:4C:6C
 
 #define ESPNOW_WIFI_CHANNEL 6
 
 // Add Slave Mac to peerInfo stuct
-uint8_t slaveMAC[] = { 0x68, 0xFE, 0x71, 0x80, 0x5D, 0xC0 };
+// uint8_t slaveMAC[] = { 0x68, 0xFE, 0x71, 0x80, 0x5D, 0xC0 };
+uint8_t slaveMAC[] = { 0x88, 0x57, 0x21, 0x8E, 0xAD, 0x9C };
 
 // Package to be sent to the slave board
 struct JoystickPositions {

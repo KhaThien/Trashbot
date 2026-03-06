@@ -2,6 +2,8 @@
 #include "WiFi.h"
 #include <esp_mac.h>
 
+
+// Slave Mac Address : 88 : 57 : 21 : 8E : AD : 9C
 // Master Mac Address: 94:51:DC:5D:4C:6C
 #define ESPNOW_WIFI_CHANNEL 6
 #define BRAKE_ON HIGH
@@ -25,6 +27,7 @@ enum MotionState { IDLE,
                    LEFT,
                    RIGHT };
 MotionState currentState;
+
 
 struct JoystickPositions {
   uint16_t xVal;
@@ -74,31 +77,33 @@ void loop() {
   Serial.print(" | y: ");
   Serial.println(y);
 
+  //Reverse Direction
   if (y < deadzone_lower_limit) {
     brakeOff(brakeLeft);
     brakeOff(brakeRight);
     if (x < deadzone_lower_limit) {
       analogWrite(speedLeft, 0);
-      reverse(directionRight, speedRight, y);
+      forward(directionRight, speedRight, y);
     } else if (x > deadzone_upper_limit) {
       analogWrite(speedRight, 0);
       reverse(directionLeft, speedLeft, y);
     } else {
       reverse(directionLeft, speedLeft, y);
-      reverse(directionRight, speedRight, y);
+      forward(directionRight, speedRight, y);
     }
+    //Forward Direction
   } else if (y > deadzone_upper_limit) {
     brakeOff(brakeLeft);
     brakeOff(brakeRight);
     if (x < deadzone_lower_limit) {
       analogWrite(speedLeft, 0);
-      forward(directionRight, speedRight, y);
+      reverse(directionRight, speedRight, y);
     } else if (x > deadzone_upper_limit) {
       analogWrite(speedRight, 0);
       forward(directionLeft, speedLeft, y);
     } else {
       forward(directionLeft, speedLeft, y);
-      forward(directionRight, speedRight, y);
+      reverse(directionRight, speedRight, y);
     }
   } else {
     idle();
@@ -179,10 +184,10 @@ void reverse(int directionPin, int speedPin, int speed) {
 void setMotorSpeed(int speedPin, int y) {
   int speed;
   if (y > deadzone_upper_limit) {
-    speed = map(y, 0, 100, 0, 255);
+    speed = map(y, 0, 100, 0, 64);
   } else if (y < deadzone_lower_limit) {
-    speed = map(y, 100, 0, 0, 255);
+    speed = map(y, 100, 0, 0, 64);
   }
-  analogWrite(speedPin, 127);  //Burst
+  analogWrite(speedPin, 32);  //Burst
   analogWrite(speedPin, speed);
 }
