@@ -27,6 +27,7 @@
 
 int deadzone_lower_limit = -15;
 int deadzone_upper_limit = 15;
+unsigned long lastReceived = 0;
 
 // ─── Data ──────────────────────────────────────────────
 struct JoystickPositions {
@@ -70,9 +71,14 @@ void loop() {
   Serial.print(" | y: ");
   Serial.println(y);
 
+  if (millis() - lastReceived > 500) {  // 500ms timeout
+    idle();
+    return;
+  }
   if (received.isButtonPressed) {
     Serial.println("STOP REQUESTED");
     idle();
+    delay(1000);
   } else {
     handleMotion(x, y);
   }
@@ -133,6 +139,7 @@ void idle() {
 }
 
 void onDataReceive(const esp_now_recv_info* info, const uint8_t* data, int len) {
+  lastReceived = millis();
   memcpy(&received, data, sizeof(received));
 }
 
@@ -151,7 +158,7 @@ void setDirectionReverse(int directionPin) {
 
 void setMotorSpeed(int speedPin, int y) {
   int speed = map(abs(y), 0, 100, 0, 64);
-  analogWrite(speedPin, 32);  //Burst
+  analogWrite(speedPin, 64);  //Burst
   analogWrite(speedPin, speed);
 }
 
