@@ -5,6 +5,7 @@
 // Joystick
 #define xPin 34
 #define yPin 35
+#define buttonPin 32
 int xVal;
 int yVal;
 // Extra ESP Board Mac: 68:FE:71:80:5D:C0
@@ -21,13 +22,14 @@ uint8_t slaveMAC[] = { 0x88, 0x57, 0x21, 0x8E, 0xAD, 0x9C };
 struct JoystickPositions {
   uint16_t xVal;
   uint16_t yVal;
+  bool isButtonPressed;
 };
 
 JoystickPositions data;
 
 void setup() {
   Serial.begin(115200);
-
+  pinMode(buttonPin, INPUT_PULLUP);
 
   // Initialize the Wi-Fi module
   WiFi.mode(WIFI_STA);
@@ -59,6 +61,7 @@ void setup() {
 }
 
 void loop() {
+  data.isButtonPressed = digitalRead(buttonPin) == 0;
   data.xVal = analogRead(xPin);
   data.yVal = analogRead(yPin);
   delay(20);
