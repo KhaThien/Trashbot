@@ -2,112 +2,61 @@
 
 ---
 
-## Project Management
-
-### High-Level Objectives
-
-The Trashbot project was born out of a very real, very personal frustration: dealing with trash is gross, inconvenient, and surprisingly disruptive to daily life. The goal of this project is to build a smart, motorized carrier that can transport a standard residential trashcan — autonomously or via remote control — so that the chore of taking out the trash is no longer something a human has to think about or physically do.
-
-Phase 1 objective: a remote-controlled trashcan carrier. The user can stand at a distance, use a handheld wireless controller, and drive the trashcan to the curb and back without ever touching it.
-
-Phase 2 objective: full automation. The carrier will know what day and time it is, know the trash pickup schedule, and autonomously take the trashcan out and bring it back in — without any human input at all.
-
----
-
-### Timeline
-
-**Phase 1: February 2026 – April 2026** (approx. 3 months, part-time)
-- Month 1: Research, component sourcing, procurement, returns/exchanges, and lead time
-- Month 2: Design, build, and testing
-- Month 3: Documentation, demos, and polish
-
-**Phase 2: May 2026 – July 2026** (approx. 3 months, part-time)
-- Same monthly breakdown: research → build → document
-
----
-
-### Budget & Procurement
-
-Target budget for Phase 1: **~$150**
-
-Major cost drivers:
-- Battery: ~$60 per unit
-- ESP32 dev boards: ~$25–30 for 3–4 boards
-- Motor controllers (ZS-X11HV2): ~$20–25
-
-The rest of the budget covers the wooden platform, caster wheel, 3D printing filament, screws, spacers, wiring, and miscellaneous hardware. Sourcing smart (e.g., Goodwill for the hoverboard at $2) was a key strategy to keep costs down.
-
----
-
-### MVP
-
-The MVP is deliberately narrow: a remote-controlled carrier that can move a trashcan from point A to point B without the user touching the trashcan. No automation, no scheduling, no sensors — just reliable, controllable movement. Once that is proven, Phase 2 layers intelligence on top.
-
----
-
-### Quality Evaluations
-
-*[Placeholder — to be filled in with testing criteria, pass/fail metrics, and demo results]*
-
----
-
----
-
 ## The Origin Story
 
-This project started with frustration. Not one frustration — many, stacked on top of each other, building up over time until the only reasonable response was to engineer a solution.
+Inspired by a philosopher I found on the internet, "make something out of your pain", I decided to end my long-term relationship with the one task nobody enjoys: taking out the trash.
 
-Here's the full picture of what made trash so unbearable:
+The pains stacked up fast: the bin is dirty, Arizona summers make stepping outside miserable at any hour, and there's a narrow weekly window to get the bin to the curb and back before the HOA fines you. Miss it once and trash piles up. Miss it twice and you're sorting recycling by hand in 110°F heat.
 
-**Touching the trashcan is gross.** There's trash water, residue, and general filth on and around it. Nobody wants to put their hands on it.
+Phase 1 removes the friction: a motorized platform that carries the trashbin, controlled by a handheld RF remote. Drive it from the backyard to the curb and back without ever touching it, or even stepping outside. Low enough friction that anyone in the household will actually do it.
 
-**The timing is a nightmare.** The trash company comes three times a week: trash pickup on Tuesday and Friday mornings, recycling on Wednesday morning. You can't put the can out too early — neighbors don't appreciate an ugly trashcan sitting on the curb since Monday — but you also can't put it out too late, because the pickup truck doesn't give you a warning call. Sometimes they come early, sometimes they don't. So the window is roughly late Monday night or early Tuesday morning, with no precise timing.
-
-**We forget.** Life is busy. When you miss a pickup day, trash piles up. And when trash piles up, you're forced to take everything out at once — including recycling mixed in with trash — which defeats the purpose of recycling in the first place. Environmental guilt on top of logistical failure.
-
-**The return trip is just as bad.** After a long day at work — heavy backpack, groceries, tired — the trashcan is sitting outside in the Arizona sun. It has been baking all day. It smells. It's dirty. And it needs to be dragged back to the backyard before you can even go inside and rest. Nobody has the energy or the extra hands for that.
-
-**Manual systems don't work.** Whiteboards with schedules, notes about whose turn it is, reminders — all of it created conflict. Someone would forget, expectations weren't met, and the frustration shifted from "trash is annoying" to "why don't we have a system" to arguments. And if you were the one who forgot, the guilt was its own problem.
-
-After many conversations about how to solve this, the realization finally clicked: the problem isn't about habits or reminders. The problem is that the task itself is unpleasant enough that no habit will stick reliably. The solution has to remove the task entirely — or at minimum, make it so frictionless and even fun that it stops being a source of stress.
-
-That's where the idea of remote control came in. If you can stand at the front door and drive the trashcan to the curb with a joystick — without ever stepping outside in the dark, without touching anything gross — it stops being a chore and starts being almost entertaining. And once the remote-control layer is solid, automating the whole thing becomes the obvious next step.
-
----
+Phase 2 removes the task entirely: a fully autonomous robot that handles pickup day on its own. No reminders, no scheduling, no human input.
 
 ---
 
 ## Mechanical
 
-### Design Space & Design Approach
+### Product Concept Design
 
-#### Raw Ideas
+#### Initial Ideas
 
-The first instinct was simple: motorize the trashcan itself. Replace its existing wheels with motorized ones, add a battery and controller at the bottom, and go.
+Three approaches were considered before settling on a direction.
 
-That idea fell apart quickly once the constraints became clear:
+**Idea #1: Replace the bin's wheels with motor wheels (Eliminated)**
 
-- The trashcan has almost no clearance at the bottom. There's no room to attach hardware underneath without major modifications to the can itself.
-- The wheel attachment points on the trashcan are specific, and finding motorized wheels that match that geometry is difficult and limiting.
-- In Arizona, any hardware mounted on the side or bottom of the trashcan would be exposed to intense sun. Batteries and electronics in direct desert sun degrade fast.
-- Attaching hardware to the plastic trashcan body directly is a problem — screwing into plastic is unreliable, adhesives fail in high heat, and it's just gross to be fastening things to a trash receptacle.
-- The biggest problem: trash water and rain. If the hardware is mounted on the trashcan, washing the can becomes complicated. Replacing the trashcan (which happens eventually) means removing and reinstalling all the hardware. That's gross, inefficient, and defeats the whole purpose of keeping the system clean and reusable.
+The bin's existing wheel geometry makes finding compatible motorized wheels difficult. Beyond fit, mounting anything directly to the bin creates a chain of problems: permanent damage to the bin, difficult maintenance, and the risk of leaking waste water into the hardware. The bin also has almost no clearance underneath for controllers and battery, and charging becomes awkward given the bin's size. In Arizona, any electronics mounted on the side staying outside all day would have little to no protection from summer heat.
 
-The pivot was straightforward: instead of modifying the trashcan, build a separate carrier platform that the trashcan sits on top of. Clean separation between dirty and smart. The trashcan stays a trashcan. The carrier does all the work.
+→ Clear blockers and thus, eliminated.
 
-#### Considerations in 3D Printing
+**Idea #2: Separate carrier motorized platform (Selected)**
 
-The hoverboard motor wheels have a small hollow metal tube at their center (where the wires run through). The original hoverboard mounting hardware doesn't fit flat against the wooden platform due to geometric mismatch. Additionally, the motorized wheels and the front caster wheel needed to all sit at the same height so the platform would be level — a requirement for stability when carrying a heavy, top-heavy trashcan.
+Instead of modifying the bin, build a platform the bin sits on top of. The platform approach solves most of Idea #1's problems at once: the platform can be sized with as much clearance as needed for components, and that clearance also shields electronics from heat, rain, and rough terrain. More importantly, it cleanly separates the automated system from the garbage bin so the bin stays a bin — easy to wash, easy to replace, no hardware attached to it.
 
-The solution was to design and 3D print solid adapter cubes. Each cube:
-- Has a half-pipe/half-cylinder cutout on top for the wheel's metal tube to rest in
-- Is sized to match the footprint of the hoverboard's metal mounting plate (which comes with each wheel)
-- Has 4 holes that align with the 4 screw holes on the metal plate
-- Long screws and spacers pass through the platform board, the cube, and the metal plate to clamp everything together
+It's worth noting this design assumes a garbage collection setup where the worker lifts the bag out of the bin manually. In neighborhoods where the truck uses a robotic arm to lift and dump the entire bin, Idea #3 would be more suitable.
 
-The cubes were printed solid (non-hollow) intentionally — no risk of cracking under the load of a full trashcan.
+→ My neighborhood uses manual collection, so the rest of this documentation will further demonstrate the build details of this design concept.
 
-This design worked on the first print. No iteration needed.
+**Idea #3: Small robot that hooks onto the back of the bin and pulls it (On the shelf)**
+
+Similar advantages to Idea #2 in terms of keeping hardware separate from the bin. The challenge is stability: rough terrain makes a trailing-pull/push configuration hard to control. Even manually pulling my bin across my own pavement showed how easily it can tilt or tip over. This idea is worth revisiting if incorporating an automatic gate-opener to handle the yard gate as part of the same trip becomes a requirement, and there's no clean way to integrate it into the platform design.
+
+→ A valid approach — just not for my driveway.
+
+---
+
+#### 3D Printed Adapter Cubes
+
+The hoverboard motor wheels have a small hollow metal tube at their center where the wires exit. The stock mounting hardware doesn't sit flat against a wooden platform, and the motor wheels needed to match the caster wheel's height exactly for the platform to sit level under a heavy, top-heavy load.
+
+The solution was custom adapter cubes, designed in SolidWorks and 3D printed. Each cube:
+
+- Has a half-cylinder cutout on top for the wheel's metal tube to rest in
+- Matches the footprint of the hoverboard's metal mounting plate
+- Has four holes aligned to the plate's four screw holes
+
+Long screws and spacers run through the platform board, the cube, and the metal plate, clamping everything together as a single rigid assembly. The cubes were printed solid — no hollow fill — to eliminate any risk of cracking under load.
+
+→ Worked on the first print.
 
 ---
 
@@ -119,31 +68,71 @@ This design worked on the first print. No iteration needed.
 
 ### Designs
 
-#### Chassis
+The system has two main parts: a motorized platform and a handheld controller.
 
-**Platform:** A 24-inch round pine wood board, purchased at a hardware store as a slightly imperfect board for under $10. The round shape distributes weight evenly and gives clearance on all sides for the wheel assemblies.
+The platform carries the bin — two motor wheels on the sides, one caster wheel in front for turning, and electronics mounted underneath. The handheld controller houses an ESP32, two joysticks, and a battery pack inside a 3D-printed enclosure.
 
-**Caster wheel:** Before designing anything in SolidWorks, the caster wheel was selected first. This was a deliberate sequencing choice — the caster wheel's height determines the ground clearance, which in turn determines how tall the 3D-printed adapter cubes need to be. A 6-inch rounded-profile caster wheel was selected. The rounded profile (vs. a flat-cylinder edge) was chosen by physically rolling both types across the floor at the hardware store — the rounded edge had lower rolling resistance on rough concrete, which matters for a driveway surface. The 6-inch height also provides enough ground clearance for the electronics mounted underneath and to roll over cracks and surface irregularities.
+---
 
-**Assembly sequence:**
-1. Selected and purchased the 6-inch caster wheel
-2. Mounted it on the platform and measured the resulting ground-to-platform height
-3. Measured the height of the hoverboard motor wheel assemblies
-4. Calculated the cube dimensions needed to bring the motor wheels up to the same height as the platform
-5. Designed the cubes in SolidWorks
-6. 3D printed and assembled — worked on first try
+#### Platform
 
-**Motor wheels:** Salvaged from a used hoverboard purchased at Goodwill for $2. Hoverboards are frequently donated due to dead batteries, while the motors themselves remain functional. The battery was confirmed dead via multimeter. The hall sensors (which detect wheel rotation for motor control) were confirmed working by manually spinning the wheels and feeling the expected magnetic resistance. A bench test with a spare ~24V battery confirmed the motors spun correctly when powered.
+**Motor wheels**
 
-The hoverboard came with two brushless hub motors, two motor controllers (not reused — see Electronics section), the wiring harness, and the metal mounting plates used in the cube assembly.
+Repurposed from a used hoverboard purchased at Goodwill for $2. Hoverboards are frequently donated because of dead batteries while the motors remain fully functional. Three quick checks before committing: battery confirmed dead via multimeter, hall sensors confirmed working by manually spinning the wheels and feeling the expected magnetic resistance, bench test with a spare ~24V battery confirmed the motors spun correctly under power.
+
+The hoverboard yielded two brushless hub motors, two motor controllers (not reused — see Electronics), a wiring harness, and the metal mounting plates used in the cube assembly.
+
+**Chassis**
+
+Built around a 24-inch round pine board — purchased for under $10 as a slightly imperfect board. The round shape distributes weight evenly and gives natural clearance on all sides for the wheel assemblies. Everything else was sized around it.
+
+**Caster wheel**
+
+The caster wheel was selected before anything was designed in SolidWorks — a deliberate sequencing choice. Its height sets the ground clearance, which in turn determines how tall the 3D-printed adapter cubes need to be for the motor wheels. Getting this number wrong early would cascade through the rest of the build.
+
+A 6-inch caster with a rounded-profile edge was selected. The profile choice came from a simple test at the hardware store: physically rolling both rounded and flat-edge casters across the concrete floor. The rounded edge had noticeably lower rolling resistance — relevant for a driveway surface. The 6-inch height provides enough clearance for the electronics mounted underneath and enough rollover ability for cracks and surface irregularities.
+
+**3D Printed Adapter Cubes**
+
+The hoverboard motor wheels have a small hollow metal tube at their center where the wires exit. The stock mounting hardware doesn't sit flat against a wooden platform, and the motor wheels needed to match the caster wheel's height exactly for the platform to sit level under a heavy, top-heavy load.
+
+The solution was custom adapter cubes, designed in SolidWorks and 3D printed. Each cube:
+
+- Has a half-cylinder cutout on top for the wheel's metal tube to rest in
+- Matches the footprint of the hoverboard's metal mounting plate
+- Has four holes aligned to the plate's four screw holes
+
+Long screws and spacers run through the platform board, the cube, and the metal plate, clamping everything together as a single rigid assembly. The cubes were printed solid — no hollow fill — to eliminate any risk of cracking under load.
+
+The assembly sequence:
+
+1. Select and purchase the 6-inch caster wheel
+2. Mount it to the platform and measure the resulting ground-to-platform height
+3. Measure the height of the hoverboard motor wheel assemblies
+4. Calculate the adapter cube dimensions needed to bring the motor wheels up to the same height
+5. Design the cubes in SolidWorks, print, and assemble
+
+→ Worked on the first print.
+
+---
 
 #### Handheld Controller
 
-*[Placeholder — revisit with photos and SolidWorks renders]*
+The controller was designed in SolidWorks using two features heavily: Configurations to explore multiple dimension variations without maintaining separate files, and Design in Assembly to position the internal components — two joysticks, a battery pack, and an ESP32 — before designing the housing around them. Cost and material weight were evaluated by importing each design into 3D printing software. Ease of assembly and disassembly became the primary focus from Design #2 onward.
 
-#### Phase 2: Gate Opener / Automated System
+**Design #1** *[Image]*
 
-*[Placeholder — end-of-document section, after Phase 1 is complete]*
+Most of the time went into learning how to work effectively in SolidWorks assembly mode — reorienting components is time-consuming when design intent isn't established upfront. That lesson shaped how Design #2 was approached. The design was eliminated after importing into 3D printing software: the material cost came out to [placeholder] grams, and a clearer idea for reducing the size for better grip emerged.
+
+**Design #2** *[Image]*
+
+The battery pack was reoriented and component spacing was significantly reduced. The two separate poles from Design #1 were consolidated into a single center bridge, which holds the battery pack in place while connecting the joysticks and ESP32 on either side. The ESP32 dev board enclosure was removed — only the main board is mounted, reducing bulk.
+
+The first print needed minor adjustments, but rather than re-printing immediately, hot glue was used to secure the joysticks and save prototyping time. The tight tolerances of the printed parts keep everything else in place with minimal movement. Assembly and disassembly are quick.
+
+**Design #3** *[Image]*
+
+Introduced snap-fit connections for cleaner assembly without fasteners. The first snap-fit worked, but thin snap-fit features are prone to bending during the print process — a known challenge with FDM printing. Multiple iterations of the snap geometry will need to be tested before the fit is reliable.
 
 ---
 
@@ -161,29 +150,37 @@ The hoverboard came with two brushless hub motors, two motor controllers (not re
 
 | Component | Source | Cost | Notes |
 |---|---|---|---|
-| Hoverboard (for motors + wiring) | Goodwill | $2 | Dead battery, working motors |
-| ESP32 dev boards (x3) | Amazon | ~$25–30 | Used dev boards with breakout pins for prototyping |
-| Motor controllers ZS-X11HV2 (x2, then x2 more) | Amazon | ~$25 first set, ~$27 second set | First set: one burnt due to modified ESP8266 wiring issue |
+| Hoverboard (motors + wiring) | Goodwill | $2 | Dead battery, working motors |
+| ESP32 dev boards (x3) | Amazon | ~$25–30 | Dev boards with breakout pins for prototyping |
+| Motor controllers ZS-X11HV2 (x2, then x2 more) | Amazon | ~$25 first set, ~$27 second set | First set: one burnt due to ESP8266 wiring issue |
 | 6-inch caster wheel | Ace Hardware | ~$8–10 | Rounded profile, selected in-store |
-| 24V round pine wood board | Hardware store | <$10 | Slightly imperfect board, discounted |
+| 24-inch round pine board | Hardware store | <$10 | Slightly imperfect board, discounted |
 
-**Note on hoverboard motor controllers:** The hoverboard came with its own motor controllers, but these were not reused. Hoverboard controllers run proprietary firmware — there is no accessible way to reprogram them without reverse-engineering the system, which could involve cracking encrypted firmware or finding undocumented protocols. Rather than spending time on that rabbit hole, off-the-shelf brushless motor controllers (ZS-X11HV2, 6–60V, 400W) were purchased for ~$25. This kept the project moving and gave full control over the motor behavior through clean, documented PWM inputs.
+**On the hoverboard motor controllers:** The hoverboard came with its own controllers, but they weren't reused. Hoverboard controllers run proprietary firmware with no accessible reprogramming path — reverse-engineering would mean cracking encrypted firmware or finding undocumented protocols. Off-the-shelf brushless controllers (ZS-X11HV2, 6–60V, 400W) were purchased instead for ~$25, giving full control over motor behavior through clean, documented PWM inputs.
 
 ---
 
-### Testing Firmware / Unit Tests
+### Protocol: ESP-NOW
 
-#### Philosophy
+ESP-NOW was chosen as the wireless protocol between the handheld controller and the platform. The decision was straightforward — it's built directly into the ESP32, so no additional hardware, modules, or cost. Key reasons:
 
-The approach to electronics testing mirrored the approach to software unit testing: start with the smallest possible isolated test, confirm it works, then build up. Rather than wiring everything together and debugging a complex system, each component was validated independently first.
+- Built into the ESP32 — no extra hardware needed
+- Direct board-to-board communication — no router, no WiFi network dependency
+- Range of 10+ meters comfortably covers the distance from a front door to the curb
+- Low latency — 20ms packet intervals is more than sufficient for real-time motor control
+- Well-documented with real-world community examples in similar projects
+- Supports two-way and one-to-many topologies — useful headroom for Phase 2 without a protocol change
 
-The small-scale test rig consisted of:
+---
+
+### Testing Log
+
+Each component was validated in isolation before being integrated. The small-scale test rig used to validate motor control logic and wireless communication before touching the hoverboard motors:
+
 - 1x ESP32 dev board
 - 1x small Arduino DC motor
 - 1x H-bridge motor driver
 - 1x KY-023 joystick module
-
-This let the motor control logic and wireless communication be validated before touching the actual hoverboard wheel system.
 
 ---
 
@@ -191,42 +188,36 @@ This let the motor control logic and wireless communication be validated before 
 
 **1. Joystick wiring bug (fixed)**
 
-One joystick axis wasn't reading correctly. Initially suspected the joystick module itself, and tried adding a second joystick (one for X, one for Y). The problem persisted. Used a multimeter to check the Y pin voltage while moving the joystick on the X axis — the voltage was changing when it shouldn't have been. Traced it back to the Vcc pin being wired to 5V instead of 3.3V. Lesson: always check the datasheet for voltage requirements before wiring.
+One joystick axis wasn't reading correctly. Initially suspected the module itself and tried splitting X and Y across two joysticks — problem persisted. Used a multimeter to check Y pin voltage while moving the X axis; it was changing when it shouldn't. Traced it to the Vcc pin wired to 5V instead of 3.3V. Lesson: check the datasheet for voltage requirements before wiring.
 
-**2. ESP-NOW working between two ESP32 boards**
+**2. ESP-NOW between two ESP32 boards**
 
 Successfully sent joystick data wirelessly using ESP-NOW. Key learnings:
 - Used `memcpy()` to unpack received data bytes back into a struct
-- Sending every 20ms (50 packets/second) is more than enough for smooth DC motor control
-- ESP-NOW uses the WiFi radio hardware but doesn't need a router — direct board-to-board communication
-- Both boards must be on the same WiFi channel. Used the NetSpot app to find the least congested channel after other methods didn't work
-- Master needs the slave's MAC address to send; slave just listens
-- ESP-NOW max payload is 250 bytes per packet — joystick X/Y using `uint16_t` is only 4 bytes total, well within limits
-- `uint16_t` (2 bytes, max 65535) is the most efficient type for 12-bit ADC values (0–4095)
+- Sending every 20ms (50 packets/second) is more than enough for smooth motor control
+- ESP-NOW uses the WiFi radio but doesn't need a router — direct board-to-board
+- Both boards must be on the same WiFi channel — used NetSpot to find the least congested channel
+- Master needs the slave's MAC address; slave just listens
+- Max payload is 250 bytes per packet — joystick X/Y via `uint16_t` is 4 bytes total
+- `uint16_t` (2 bytes, 0–65535) is the right type for 12-bit ADC values (0–4095)
 
-**3. Joystick → motor control logic**
+**3. Joystick to motor control logic**
 
-X axis controls direction (left/right turning), Y axis controls speed and forward/reverse. Key learnings:
-- Used a deadzone (~40–60 on a mapped 0–100 scale) to prevent motor twitching at idle
-- `map()` with a flipped output range handles reverse direction speed correctly
-- Cannot pass `y=0` to `set_speed()` because it triggers full reverse — use `ledcWrite(speedPin, 0)` directly to stop motors
-- PWM resolution set to 16-bit (0–65535) on ESP32 — this is a software configuration, not a hardware ceiling. 8-bit would also work
-- ADC2 pins are unsafe to use when any wireless protocol (WiFi, ESP-NOW, Bluetooth) is active — must use ADC1 pins (GPIO 32–39) for analog reads
+X axis controls direction, Y axis controls speed and forward/reverse. Key learnings:
+- Deadzone of ~40–60 (on a 0–100 mapped scale) prevents motor twitching at idle
+- `map()` with a flipped output range handles reverse speed correctly
+- Cannot pass `y=0` to `set_speed()` — it triggers full reverse. Use `ledcWrite(speedPin, 0)` directly to stop
+- PWM resolution set to 16-bit (0–65535) — a software configuration, not a hardware ceiling
+- ADC2 pins are unsafe with any wireless protocol active — use ADC1 pins (GPIO 32–39) for analog reads
 
 **4. C/C++ concepts refreshed**
-- Pointers: `&var` gets the address, `*ptr` dereferences it
-- Arrays decay to pointers automatically when passed to functions
+- `&var` gets the address, `*ptr` dereferences it
+- Arrays decay to pointers when passed to functions
 - `(uint8_t*)&myStruct` — `&` gets the address, `(uint8_t*)` casts it so ESP-NOW can treat it as raw bytes
-- Struct variables declared inside a function are local scope only — declare at top level if needed across functions
-- `map()` at global scope runs before Arduino initializes — declare globally but assign inside `setup()`
-- Forward declarations (prototypes) let you define functions after they're called
+- Struct variables declared inside a function are local scope — declare at top level if needed across functions
+- `map()` at global scope runs before Arduino initializes — assign inside `setup()`
+- Forward declarations let you define functions after they're called
 - `sizeof()` returns the byte size of any variable or type
-
-**5. arduino-cli workflow**
-- `arduino-cli board list` to find connected board ports
-- Compile once, upload to multiple boards separately using different `-p` port flags
-- `sketch.yaml` must exist in the project folder with the correct `default_fqbn` or LSP won't work
-- `arduino-cli monitor -p <port> --config 115200` to open serial monitor
 
 ---
 
@@ -234,35 +225,78 @@ X axis controls direction (left/right turning), Y axis controls speed and forwar
 
 **Switched from H-bridge to brushless motor controllers**
 
-Moved from the small test H-bridge to the real hoverboard motor controllers (ZS-X11HV2, 6–60V, 400W).
+Moved from the small test H-bridge to the real motor controllers (ZS-X11HV2, 6–60V, 400W).
 
 Key specs:
 - PWM input range: 2.5–5V amplitude, 50Hz–20kHz frequency
 - Direction control: LOW level is active (REVERSE_ON = LOW, REVERSE_OFF = HIGH)
 - Brake: HIGH level active
 
-*[Placeholder — expand with full wiring details, pin mapping, and bench test results for the real motor controllers]*
+*[Placeholder — expand with full wiring details, pin mapping, and bench test results]*
 
 ---
 
 #### The Burnt Motor Controller
 
-Before the unit test phase with the ESP32 dev boards, an earlier attempt was made using a modified ESP8266 (borrowed from a previous project). The ESP8266 had some pins already pre-connected internally — a modification that wasn't visually obvious. During wiring, the wrong pins were connected together, which sent incorrect signals to the motor controller and burnt it out.
+Before the ESP32 unit test phase, an earlier attempt used a modified ESP8266 borrowed from a previous project. The board had pins pre-connected internally — a modification that wasn't visually obvious. The wrong pins were bridged during wiring, which sent bad signals to the motor controller and burnt it out.
 
-The debugging process:
+The debug process:
 1. Loaded the program — wheel didn't respond as expected
-2. Broke the code down into minimal unit tests — still no correct response
-3. Researched the motor controller specs — found that the stop pin on these Chinese-made controllers doesn't work as documented. No clear datasheet available. Decided to drop the stop function and use the brake function instead — which works fine
-4. Used a multimeter to check each pin on the motor controller for correct voltage output (high/low) per the program
-5. Checked continuity — discovered some pins on the ESP8266 were internally connected due to the pre-modification, causing incorrect wiring
+2. Stripped the code down to minimal unit tests — still no correct response
+3. Researched the controller specs — found the stop pin on these controllers doesn't work as documented. No clear datasheet available. Dropped the stop function, used brake instead — which works fine
+4. Used a multimeter to verify each pin's voltage output against the program
+5. Checked continuity — found the pre-existing internal connections on the ESP8266 causing the incorrect wiring
 
-After the burnt controller and the difficulty of working around an unknown hardware modification, the ESP8266 was retired. The ESP32 was chosen as the replacement — newer, more capable, and critically, unmodified. Three ESP32 dev boards were purchased from Amazon (with breakout pin headers for easy prototyping without soldering).
+After this, the ESP8266 was retired. The ESP32 was the replacement — newer, more capable, and unmodified. Three dev boards were purchased from Amazon with breakout headers for easy prototyping.
 
 ---
 
 ### Tools: KiCad + Wiring Diagram
 
-*[Placeholder — revisit with full schematic, KiCad screenshots, and wiring diagram. Connect to the motor controller specs and ESP32 pin assignments documented above.]*
+*[Placeholder — full schematic, KiCad screenshots, and wiring diagram. Connect to motor controller specs and ESP32 pin assignments above.]*
+
+---
+
+---
+
+## Project Management
+
+### Objectives
+
+Phase 1 is deliberately narrow: a remote-controlled carrier that moves the trashcan from backyard to curb and back without the user ever touching it. No automation, no scheduling, no sensors — just reliable, controllable movement. Once that's proven, Phase 2 builds on top.
+
+Phase 2 is full automation — the carrier handles pickup day on its own. It knows the schedule, makes the trip, and brings the bin back in without any human input.
+
+---
+
+### Timeline
+
+**Phase 1: February 2026 – April 2026** (approx. 3 months, part-time)
+- Month 1: Research, component sourcing, procurement, returns/exchanges, and lead time
+- Month 2: Design, build, and testing
+- Month 3: Documentation, demos, and polish
+
+**Phase 2: May 2026 – July 2026** (approx. 3 months, part-time)
+- Same breakdown: research → build → document
+
+---
+
+### Budget
+
+Target for Phase 1: **~$150**
+
+Major cost drivers:
+- Battery: ~$60
+- ESP32 dev boards: ~$25–30 for 3–4 boards
+- Motor controllers (ZS-X11HV2): ~$20–25
+
+The rest covers the platform, caster wheel, 3D printing filament, screws, spacers, and wiring. Sourcing smart — Goodwill for the hoverboard at $2 — kept costs down where it didn't matter.
+
+---
+
+### Quality Evaluations
+
+*[Placeholder — testing criteria, pass/fail metrics, and demo results]*
 
 ---
 
@@ -272,53 +306,30 @@ After the burnt controller and the difficulty of working around an unknown hardw
 
 ### Nvim Environment
 
-Arduino IDE was the obvious starting point — it's what most people use for ESP32 and Arduino projects. But early on, a decision was made to move everything to Neovim instead and use it as the single development environment for the entire project.
+Arduino IDE was the obvious starting point, but early on everything moved to Neovim as the single development environment for the project. The motivation was consistency: rather than context-switching between Arduino IDE for firmware, a text editor for notes, and something else for documentation, Neovim handles all of it. The learning curve was real, but the payoff was a deeper understanding of the underlying toolchain — compilers, serial monitors, LSP, build systems — rather than just clicking buttons in a GUI.
 
-The motivation: consistency. Rather than context-switching between Arduino IDE for firmware, a text editor for notes, and something else for exploring documentation, Neovim handles all of it. The learning curve was real, but once past it, the payoff was significant — a deeper understanding of the underlying toolchain (compilers, serial monitors, LSP, build systems) rather than just clicking buttons in a GUI. Neovim became the environment for writing code, taking notes, testing, and exploring.
+The bridge between Neovim and the Arduino ecosystem is `arduino-cli`, a command-line tool that handles everything Arduino IDE does through a GUI. Key commands:
 
----
-
-### Arduino → Nvim Environment
-
-The bridge between Neovim and Arduino development is `arduino-cli` — a command-line tool that handles everything the Arduino IDE normally does through a GUI.
-
-Key workflow commands:
 - `arduino-cli board list` — find connected boards and their ports
 - `arduino-cli compile --fqbn <board>` — compile the sketch
 - `arduino-cli upload -p <port> --fqbn <board>` — upload to a board
-- Compile once, upload to multiple boards separately with different `-p` flags (useful for flashing both master and slave ESP32s)
-- `sketch.yaml` in the project folder with the correct `default_fqbn` is required for LSP (language server) to work correctly in Neovim
-- `arduino-cli monitor -p <port> --config 115200` — open serial monitor for debugging output
-
----
-
-### Unit Tests
-
-The unit testing philosophy in software directly mirrors the approach used in electronics: isolate the smallest possible piece of behavior, verify it works, then build up. The small-scale test rig (DC motor + H-bridge + joystick + ESP32) was the physical embodiment of a software unit test — one input, one output, controlled conditions.
-
-*[Placeholder — expand with specific test cases, test code structure, and how tests were organized as the project scaled up]*
+- Compile once, upload to multiple boards with different `-p` flags — useful for flashing master and slave ESP32s separately
+- `sketch.yaml` with the correct `default_fqbn` is required for LSP to work in Neovim
+- `arduino-cli monitor -p <port> --config 115200` — open the serial monitor
 
 ---
 
 ### GitHub
 
-*[Placeholder — final item. All organized project documentation, code, schematics, and notes will be published here.]*
+*[Placeholder — code, schematics, and project files will be linked here.]*
 
 ---
 
----
+### Unit Tests
 
-## Why ESP-NOW?
+The approach mirrors software unit testing: isolate the smallest possible piece of behavior, verify it works, then build up. The small-scale test rig — DC motor, H-bridge, joystick, and ESP32 — was the physical embodiment of that: one input, one output, controlled conditions.
 
-ESP-NOW was chosen as the wireless communication protocol between the handheld controller and the carrier for several reasons:
-
-- **It comes built into the ESP32.** No additional hardware, no extra modules, no added cost.
-- **The ESP32 is cheap and widely available.** Multiple boards can be bought from Amazon for experimentation without worrying about the cost of mistakes.
-- **Range is sufficient.** Community testing and YouTube demonstrations show reliable communication at 10+ meters, which easily covers the distance from a front door to the curb.
-- **Low latency.** Fast enough for real-time motor control with 20ms packet intervals (50 packets/second).
-- **No router required.** ESP-NOW is direct board-to-board — no WiFi network needed, which means it works even if the home network is down or congested.
-- **Well-documented by the community.** Plenty of real-world examples, videos, and forum posts show it working reliably in similar projects.
-- **Room to grow.** ESP-NOW supports two-way communication and one-master-to-multiple-slaves topologies, which could be useful in later phases without requiring a protocol change.
+*[Placeholder — expand with specific test cases, test code structure, and how tests were organized as the project scaled up]*
 
 ---
 
@@ -326,21 +337,13 @@ ESP-NOW was chosen as the wireless communication protocol between the handheld c
 
 ## Demos
 
-### Videos & Images
-
-*[Placeholder — add build progress photos, assembly images, and demo videos here once Phase 1 is complete]*
-
-### Documents & Notes
-
-- Session notes from March 3, 2026: joystick bug, ESP-NOW setup, motor control logic, C++ refresher, arduino-cli workflow
-- Session notes from March 5, 2026: transition from H-bridge to brushless motor controllers, ZS-X11HV2 specs
-
----
+*[Placeholder — build progress photos, assembly images, and demo videos to be added once Phase 1 is complete]*
 
 ---
 
 ## Phase 2: Gate Opener / Automated System
 
-*[Placeholder — to be written after Phase 1 is complete. Phase 2 will cover full automation: scheduled operation, autonomous navigation from backyard to curb and back, and potentially integration with a gate opener system for homes with enclosed backyards.]*
+*[Placeholder — to be written after Phase 1 is complete]*
 
 ---
+
