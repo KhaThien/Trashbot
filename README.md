@@ -92,7 +92,7 @@ The controller was designed in SolidWorks using two features heavily: Configurat
 
 **Design #1**
 
-![Handheld controller design 1](images/handheld_design-1.jpg)
+<p align="center"><img src="images/handheld_design-1.jpg" height="400"></p>
 
 Most of the time went into learning how to work effectively in SolidWorks assembly mode — reorienting components is time-consuming when design intent isn't established upfront. That lesson shaped how Design #2 was approached. The design was eliminated after importing into 3D printing software: the material cost came out to [placeholder] grams, and a clearer idea for reducing the size for better grip emerged.
 
