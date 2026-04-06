@@ -8,19 +8,15 @@ Inspired by a philosopher I found on the internet, "make something out of your p
 
 The pains stacked up fast: the bin is dirty, Arizona summers make stepping outside miserable at any hour, and there's a narrow weekly window to get the bin to the curb and back before the HOA fines you. Miss it once and trash piles up. Miss it twice and you're sorting recycling by hand in 110°F heat.
 
+Thus, the solutions:
 Phase 1 removes the friction: a motorized platform that carries the trashbin, controlled by a handheld RF remote. Drive it from the backyard to the curb and back without ever touching it, or even stepping outside. Low enough friction that anyone in the household will actually do it.
 
 Phase 2 removes the task entirely: a fully autonomous robot that handles pickup day on its own. No reminders, no scheduling, no human input.
 
 ---
 
-## Mechanical
-
-### Product Concept Design
-
-#### Initial Ideas
-
-Three approaches were considered before settling on a direction.
+## Concept Design
+#### Three approaches
 
 **Idea #1: Replace the bin's wheels with motor wheels (Eliminated)**
 
@@ -30,7 +26,7 @@ The bin's existing wheel geometry makes finding compatible motorized wheels diff
 
 **Idea #2: Separate carrier motorized platform (Selected)**
 
-Instead of modifying the bin, build a platform the bin sits on top of. The platform approach solves most of Idea #1's problems at once: the platform can be sized with as much clearance as needed for components, and that clearance also shields electronics from heat, rain, and rough terrain. More importantly, it cleanly separates the automated system from the garbage bin so the bin stays a bin — easy to wash, easy to replace, no hardware attached to it.
+Instead of modifying the bin, build a platform the bin sits on top of. The platform approach solves most of Idea #1's problems at once: the platform can be sized with as much clearance as needed for components, and that clearance also shields electronics from heat, rain, and rough terrain. More importantly, it cleanly separates the automated system from the garbage bin so the bin stays a bin - easy to wash, easy to replace, no hardware attached to it.
 
 It's worth noting this design assumes a garbage collection setup where the worker lifts the bag out of the bin manually. In neighborhoods where the truck uses a robotic arm to lift and dump the entire bin, Idea #3 would be more suitable.
 
@@ -40,41 +36,19 @@ It's worth noting this design assumes a garbage collection setup where the worke
 
 Similar advantages to Idea #2 in terms of keeping hardware separate from the bin. The challenge is stability: rough terrain makes a trailing-pull/push configuration hard to control. Even manually pulling my bin across my own pavement showed how easily it can tilt or tip over. This idea is worth revisiting if incorporating an automatic gate-opener to handle the yard gate as part of the same trip becomes a requirement, and there's no clean way to integrate it into the platform design.
 
-→ A valid approach — just not for my driveway.
+→ A valid approach - just not for my driveway.
 
 ---
 
-#### 3D Printed Adapter Cubes
-
-The hoverboard motor wheels have a small hollow metal tube at their center where the wires exit. The stock mounting hardware doesn't sit flat against a wooden platform, and the motor wheels needed to match the caster wheel's height exactly for the platform to sit level under a heavy, top-heavy load.
-
-The solution was custom adapter cubes, designed in SolidWorks and 3D printed. Each cube:
-
-- Has a half-cylinder cutout on top for the wheel's metal tube to rest in
-- Matches the footprint of the hoverboard's metal mounting plate
-- Has four holes aligned to the plate's four screw holes
-
-Long screws and spacers run through the platform board, the cube, and the metal plate, clamping everything together as a single rigid assembly. The cubes were printed solid — no hollow fill — to eliminate any risk of cracking under load.
-
-→ Worked on the first print.
-
----
-
-### Tools: SolidWorks
-
-*[Placeholder — expand with phases of design, working in assembly mode, configurations, and prototype iterations. Include screenshots and renders.]*
-
----
-
-### Designs
+### Mechanical Designs
 
 The system has two main parts: a motorized platform and a handheld controller.
 
 The platform carries the bin — two motor wheels on the sides, one caster wheel in front for turning, and electronics mounted underneath. The handheld controller houses an ESP32, two joysticks, and a battery pack inside a 3D-printed enclosure.
 
----
-
 #### Platform
+
+![Platform overview](images/platform_all_hero.gif)
 
 **Motor wheels**
 
@@ -112,29 +86,52 @@ The assembly sequence:
 4. Calculate the adapter cube dimensions needed to bring the motor wheels up to the same height
 5. Design the cubes in SolidWorks, print, and assemble
 
-→ Worked on the first print.
-
----
-
 #### Handheld Controller
 
 The controller was designed in SolidWorks using two features heavily: Configurations to explore multiple dimension variations without maintaining separate files, and Design in Assembly to position the internal components — two joysticks, a battery pack, and an ESP32 — before designing the housing around them. Cost and material weight were evaluated by importing each design into 3D printing software. Ease of assembly and disassembly became the primary focus from Design #2 onward.
 
-**Design #1** *[Image]*
+**Design #1**
+
+![Handheld controller design 1](images/handheld_design-1.jpg)
 
 Most of the time went into learning how to work effectively in SolidWorks assembly mode — reorienting components is time-consuming when design intent isn't established upfront. That lesson shaped how Design #2 was approached. The design was eliminated after importing into 3D printing software: the material cost came out to [placeholder] grams, and a clearer idea for reducing the size for better grip emerged.
 
-**Design #2** *[Image]*
+**Design #2**
+
+![Handheld controller design 2](images/handheld_design_2_animation-2.gif)
 
 The battery pack was reoriented and component spacing was significantly reduced. The two separate poles from Design #1 were consolidated into a single center bridge, which holds the battery pack in place while connecting the joysticks and ESP32 on either side. The ESP32 dev board enclosure was removed — only the main board is mounted, reducing bulk.
 
 The first print needed minor adjustments, but rather than re-printing immediately, hot glue was used to secure the joysticks and save prototyping time. The tight tolerances of the printed parts keep everything else in place with minimal movement. Assembly and disassembly are quick.
 
-**Design #3** *[Image]*
+**Design #3**
+
+![Handheld snap-fit sketch](images/handheld_snapfit_sketch.jpg)
 
 Introduced snap-fit connections for cleaner assembly without fasteners. The first snap-fit worked, but thin snap-fit features are prone to bending during the print process — a known challenge with FDM printing. Multiple iterations of the snap geometry will need to be tested before the fit is reliable.
 
 ---
+
+## Software
+
+### Nvim Environment
+
+Arduino IDE was the obvious starting point, but early on everything moved to Neovim as the single development environment for the project. The motivation was consistency: rather than context-switching between Arduino IDE for firmware, a text editor for notes, and something else for documentation, Neovim handles all of it. The learning curve was real, but the payoff was a deeper understanding of the underlying toolchain — compilers, serial monitors, LSP, build systems — rather than just clicking buttons in a GUI.
+
+The bridge between Neovim and the Arduino ecosystem is `arduino-cli`, a command-line tool that handles everything Arduino IDE does through a GUI. Key commands:
+
+- `arduino-cli board list` — find connected boards and their ports
+- `arduino-cli compile --fqbn <board>` — compile the sketch
+- `arduino-cli upload -p <port> --fqbn <board>` — upload to a board
+- Compile once, upload to multiple boards with different `-p` flags — useful for flashing master and slave ESP32s separately
+- `sketch.yaml` with the correct `default_fqbn` is required for LSP to work in Neovim
+- `arduino-cli monitor -p <port> --config 115200` — open the serial monitor
+
+---
+
+### GitHub
+
+*[Placeholder — code, schematics, and project files will be linked here.]*
 
 ---
 
@@ -144,7 +141,11 @@ Introduced snap-fit connections for cleaner assembly without fasteners. The firs
 
 *[Placeholder — expand with fundamentals covered during the project: PWM, motor control logic, ADC, voltage levels, etc.]*
 
----
+### Unit Tests
+
+The approach mirrors software unit testing: isolate the smallest possible piece of behavior, verify it works, then build up. The small-scale test rig — DC motor, H-bridge, joystick, and ESP32 — was the physical embodiment of that: one input, one output, controlled conditions.
+
+*[Placeholder — expand with specific test cases, test code structure, and how tests were organized as the project scaled up]*
 
 ### Procurement
 
@@ -158,8 +159,6 @@ Introduced snap-fit connections for cleaner assembly without fasteners. The firs
 
 **On the hoverboard motor controllers:** The hoverboard came with its own controllers, but they weren't reused. Hoverboard controllers run proprietary firmware with no accessible reprogramming path — reverse-engineering would mean cracking encrypted firmware or finding undocumented protocols. Off-the-shelf brushless controllers (ZS-X11HV2, 6–60V, 400W) were purchased instead for ~$25, giving full control over motor behavior through clean, documented PWM inputs.
 
----
-
 ### Protocol: ESP-NOW
 
 ESP-NOW was chosen as the wireless protocol between the handheld controller and the platform. The decision was straightforward — it's built directly into the ESP32, so no additional hardware, modules, or cost. Key reasons:
@@ -170,8 +169,6 @@ ESP-NOW was chosen as the wireless protocol between the handheld controller and 
 - Low latency — 20ms packet intervals is more than sufficient for real-time motor control
 - Well-documented with real-world community examples in similar projects
 - Supports two-way and one-to-many topologies — useful headroom for Phase 2 without a protocol change
-
----
 
 ### Testing Log
 
@@ -184,7 +181,7 @@ Each component was validated in isolation before being integrated. The small-sca
 
 ---
 
-#### Session Notes: March 3, 2026
+#### Session Notes:
 
 **1. Joystick wiring bug (fixed)**
 
@@ -219,11 +216,7 @@ X axis controls direction, Y axis controls speed and forward/reverse. Key learni
 - Forward declarations let you define functions after they're called
 - `sizeof()` returns the byte size of any variable or type
 
----
-
-#### Session Notes: March 5, 2026
-
-**Switched from H-bridge to brushless motor controllers**
+**5. Switched from H-bridge to brushless motor controllers**
 
 Moved from the small test H-bridge to the real motor controllers (ZS-X11HV2, 6–60V, 400W).
 
@@ -232,11 +225,7 @@ Key specs:
 - Direction control: LOW level is active (REVERSE_ON = LOW, REVERSE_OFF = HIGH)
 - Brake: HIGH level active
 
-*[Placeholder — expand with full wiring details, pin mapping, and bench test results]*
-
----
-
-#### The Burnt Motor Controller
+**6. The Burnt Motor Controller**
 
 Before the ESP32 unit test phase, an earlier attempt used a modified ESP8266 borrowed from a previous project. The board had pins pre-connected internally — a modification that wasn't visually obvious. The wrong pins were bridged during wiring, which sent bad signals to the motor controller and burnt it out.
 
@@ -300,41 +289,6 @@ The rest covers the platform, caster wheel, 3D printing filament, screws, spacer
 
 ---
 
----
-
-## Software
-
-### Nvim Environment
-
-Arduino IDE was the obvious starting point, but early on everything moved to Neovim as the single development environment for the project. The motivation was consistency: rather than context-switching between Arduino IDE for firmware, a text editor for notes, and something else for documentation, Neovim handles all of it. The learning curve was real, but the payoff was a deeper understanding of the underlying toolchain — compilers, serial monitors, LSP, build systems — rather than just clicking buttons in a GUI.
-
-The bridge between Neovim and the Arduino ecosystem is `arduino-cli`, a command-line tool that handles everything Arduino IDE does through a GUI. Key commands:
-
-- `arduino-cli board list` — find connected boards and their ports
-- `arduino-cli compile --fqbn <board>` — compile the sketch
-- `arduino-cli upload -p <port> --fqbn <board>` — upload to a board
-- Compile once, upload to multiple boards with different `-p` flags — useful for flashing master and slave ESP32s separately
-- `sketch.yaml` with the correct `default_fqbn` is required for LSP to work in Neovim
-- `arduino-cli monitor -p <port> --config 115200` — open the serial monitor
-
----
-
-### GitHub
-
-*[Placeholder — code, schematics, and project files will be linked here.]*
-
----
-
-### Unit Tests
-
-The approach mirrors software unit testing: isolate the smallest possible piece of behavior, verify it works, then build up. The small-scale test rig — DC motor, H-bridge, joystick, and ESP32 — was the physical embodiment of that: one input, one output, controlled conditions.
-
-*[Placeholder — expand with specific test cases, test code structure, and how tests were organized as the project scaled up]*
-
----
-
----
-
 ## Demos
 
 *[Placeholder — build progress photos, assembly images, and demo videos to be added once Phase 1 is complete]*
@@ -344,6 +298,3 @@ The approach mirrors software unit testing: isolate the smallest possible piece 
 ## Phase 2: Gate Opener / Automated System
 
 *[Placeholder — to be written after Phase 1 is complete]*
-
----
-
