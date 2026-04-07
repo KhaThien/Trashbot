@@ -80,6 +80,7 @@ Designed in SolidWorks using Configurations for dimension variations and Design 
 <p align="center"><img src="images/handheld_design-1.jpg" height="400"></p>
 Mostly a SolidWorks learning exercise; reorienting components without established design intent is slow. Eliminated after 3D printing software showed [placeholder]g of material, and a clearer size-reduction idea for better grip emerged.
 
+
 **Design #2**
 
 ![Handheld controller design 2](images/handheld_design_2_animation-2.gif)
@@ -146,6 +147,7 @@ Built into the ESP32 — no extra hardware, no added cost. Key reasons:
 | Motor controllers ZS-X11HV2 (x2, then x2 more) | Amazon | ~$25 first set, ~$27 second set | First set: one burnt due to ESP8266 wiring issue |
 | 6-inch caster wheel | Ace Hardware | ~$8–10 | Rounded profile, selected in-store |
 | 24-inch round pine board | Hardware store | <$10 | Slightly imperfect board, discounted |
+
 **On the hoverboard motor controllers:** Proprietary firmware, no accessible reprogramming path. Bought off-the-shelf brushless controllers (ZS-X11HV2, 6–60V, 400W) for ~$25 instead. Clean PWM inputs and full control.
 
 ---
@@ -203,7 +205,7 @@ Early attempt used a modified ESP8266 from a previous project. Pins were pre-con
 The debug process:
 1. Loaded the program - wheel didn't respond as expected
 2. Stripped the code down to minimal unit tests - still no correct response
-3. Researched the controller specs - found the stop pin on these controllers doesn't work as documented. No clear datasheet available. Dropped the stop function, used brake instead — which works fine
+3. Researched the controller specs - found the stop pin on these controllers doesn't work as documented. No clear datasheet available. Dropped the stop function, used brake instead - which works fine
 4. Used a multimeter to verify each pin's voltage output against the program
 5. Checked continuity - found the pre-existing internal connections on the ESP8266 causing the incorrect wiring
 
