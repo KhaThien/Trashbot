@@ -41,10 +41,10 @@ JoystickPositions received;
 void onDataReceive(const esp_now_recv_info* info, const uint8_t* data, int len) {
   memcpy(&received, data, sizeof(received));
 
-  // Serial.print("x: ");
-  // Serial.print(received.xVal);
-  // Serial.print(" | y: ");
-  // Serial.println(received.yVal);
+  Serial.print("x: ");
+  Serial.print(received.xVal);
+  Serial.print(" | y: ");
+  Serial.println(received.yVal);
 }
 
 void setup() {
@@ -77,7 +77,7 @@ void setup() {
   // Attach PWM directly to pin (newer ESP32 core)
   ledcAttach(speedPin_right, pwmFreq, pwmResolution);
   ledcAttach(speedPin_left, pwmFreq, pwmResolution);
-  
+
   // Initialize both motor speeds to 0
   ledcWrite(speedPin_right, 0);
   no_direction(forwardPin_right, reversePin_right);
@@ -99,7 +99,7 @@ void loop() {
   Serial.print(x);
   Serial.print(" | y: ");
   Serial.println(y);
-  
+
   if (y < deadzone_lower_limit) {
     move_backward(forwardPin_right, reversePin_right);
     move_backward(forwardPin_left, reversePin_left);
@@ -138,20 +138,22 @@ void move_forward(int pin_forward, int pin_reverse) {
   digitalWrite(pin_forward, HIGH);
   digitalWrite(pin_reverse, LOW);
 }
-void move_backward(int pin_forward, int pin_reverse){
+void move_backward(int pin_forward, int pin_reverse) {
   digitalWrite(pin_forward, LOW);
   digitalWrite(pin_reverse, HIGH);
 }
-void no_direction(int pin_forward, int pin_reverse){
+void no_direction(int pin_forward, int pin_reverse) {
   digitalWrite(pin_forward, LOW);
   digitalWrite(pin_reverse, LOW);
 }
-void set_speed(int y, int speedPin){
+void set_speed(int y, int speedPin) {
   int speed;
-  if (y > deadzone_upper_limit){ 
+  if (y == 0) {
+    speed = 0;
+  } else if (y > deadzone_upper_limit) {
     speed = map(y, 0, 100, 0, 65535);
-  } else if (y < deadzone_lower_limit){
+  } else if (y < deadzone_lower_limit) {
     speed = map(y, 100, 0, 0, 65535);
   }
   ledcWrite(speedPin, speed);
-} 
+}
