@@ -8,7 +8,7 @@
 #define xPin 34
 #define yPin 32
 #define sleep_pin GPIO_NUM_25  // Left joystick button
-#define wake_pin GPIO_NUM_22   // Right joystick button
+#define wake_pin GPIO_NUM_4    // Right joystick button
 #define LED_BUILTIN 2
 RTC_DATA_ATTR int bootCount = 0;
 
@@ -75,11 +75,6 @@ void setup() {
   peerInfo.channel = ESPNOW_WIFI_CHANNEL;   // No encryption so slave board does not need to register master Mac@
   peerInfo.encrypt = false;
   esp_now_add_peer(&peerInfo);
-
-
-  esp_sleep_enable_ext0_wakeup(wake_pin, 0);  //1 = High, 0 = Low
-  rtc_gpio_pulldown_dis(wake_pin);
-  rtc_gpio_pullup_en(wake_pin);
 }
 
 void loop() {
@@ -101,7 +96,10 @@ void loop() {
   delay(1000);
 
   if (digitalRead((int)sleep_pin) == 0) {
-    //Tell RTC to watches wake_pin during deep sleep. When it "rings", it wakes esp up
+    //Tell RTC to watches wake_pin during deep sleep. When wake_pin goes low, wake up
+    esp_sleep_enable_ext0_wakeup(wake_pin, 0);  //1 = High, 0 = Low
+    rtc_gpio_pulldown_dis(wake_pin);            //disable internal pull down to pin is not forced LOW as LOW means button is pressed
+    rtc_gpio_pullup_en(wake_pin);               // enable internal pull up so pin sits HIGH when at rest meaning button is not pressed or activated
 
 
     //Go to sleep now
