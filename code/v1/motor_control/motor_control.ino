@@ -3,7 +3,7 @@
 #include <esp_mac.h>
 
 // ─── Network ───────────────────────────────────────────
-// Slave Mac Address: 88:57:21:8E:AD:9C
+// Slave Mac Address: 68:FE:71:80:5D:C0
 // Master Mac Address: 94:51:DC:5D:4C:6C
 #define ESPNOW_WIFI_CHANNEL 6
 
@@ -25,8 +25,8 @@
 #define brakeRight 27
 #define speedRight 14
 
-int deadzone_lower_limit = -15;
-int deadzone_upper_limit = 15;
+int deadzone_lower_limit = -20;
+int deadzone_upper_limit = 20;
 unsigned long lastReceived = 0;
 
 // ─── Data ──────────────────────────────────────────────
