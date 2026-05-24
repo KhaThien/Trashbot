@@ -23,7 +23,7 @@
 // RIGHT motor
 #define directionRight 26
 #define brakeRight 27
-#define speedRight 12
+#define speedRight 14
 
 int deadzone_lower_limit = -15;
 int deadzone_upper_limit = 15;
