@@ -14,7 +14,7 @@ RTC_DATA_ATTR int bootCount = 0;
 
 
 // Add Slave Mac to peerInfo stuct
-uint8_t slaveMAC[] = { 0x88, 0x57, 0x21, 0x8E, 0xAD, 0x9C };  // Master Mac Address: 94:51:DC:5D:4C:6C
+uint8_t slaveMAC[] = { 0x68, 0xFE, 0x71, 0x80, 0x5D, 0xC0 };  // Master Mac Address: 94:51:DC:5D:4C:6C
 int xVal;
 int yVal;
 
