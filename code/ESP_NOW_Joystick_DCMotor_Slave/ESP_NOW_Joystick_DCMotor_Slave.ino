@@ -63,7 +63,8 @@ void setup() {
     delay(5000);
     ESP.restart();
   }
-
+  // Print slave board address to double check with the address listed under master program
+  Serial.println(WiFi.macAddress());
   // Call onDataReceive function when data arrives
   esp_now_register_recv_cb(onDataReceive);
 
@@ -95,10 +96,10 @@ void loop() {
   int x = map(received.xVal, 0, 4095, 0, 100);
   int y = map(received.yVal, 4095, 0, 0, 100);
 
-  Serial.print("x: ");
-  Serial.print(x);
-  Serial.print(" | y: ");
-  Serial.println(y);
+  // Serial.print("x: ");
+  // Serial.print(x);
+  // Serial.print(" | y: ");
+  // Serial.println(y);
 
   if (y < deadzone_lower_limit) {
     move_backward(forwardPin_right, reversePin_right);
